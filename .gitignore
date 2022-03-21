@@ -1,7 +1,5 @@
 .idea/
 __pycache__/
+venv
 .env
 test.py
-setup.py
-text.txt
-venv

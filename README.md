@@ -1,2 +1,2 @@
 # yaschedule
-Lib for yandex.schedule api
+Lib for getting schedule data from Yandex Schedule API
