@@ -24,7 +24,8 @@ class YaSchedule:
                    'lang': self.__lang}
         for key, value in kwargs.items():
             if value is not None:
-                payload[key.replace('_', '', 1)] = value
+                key = key.replace('_', '', 1) if key.find('_', 0, 1) == 0 else key
+                payload[key] = value
         return payload
 
     def __get_response(self, api_method_url: str, payload: dict) -> dict:
@@ -33,6 +34,12 @@ class YaSchedule:
         return response.json()
 
     def get_all_stations(self, **kwargs):
+        """
+        Returns all available stations of api
+        API_INFO: https://yandex.ru/dev/rasp/doc/reference/stations-list.html
+        :param kwargs: u can redefine any api_method values
+        :return:
+        """
         api_method_url = "stations_list"
         payload = self.__get_payload(**kwargs)
         return self.__get_response(api_method_url, payload)
