@@ -1,6 +1,6 @@
 from setuptools import setup, find_packages
 
-version = '0.0.1'
+version = '0.0.3'
 
 setup(
     name='yaschedule',
@@ -12,7 +12,7 @@ setup(
     license='Apache License 2.0',
     platforms=['any'],
     keywords='yandex, schedule, api',
-    packages=find_packages(where='yaschedule'),
+    packages=find_packages(exclude='tests'),
     install_requires=[
     'certifi>=2021.10.8',
     'charset-normalizer>=2.0.12',
