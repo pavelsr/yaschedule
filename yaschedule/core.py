@@ -1,5 +1,5 @@
-import requests
 import datetime
+from requests_cache import CachedSession
 
 
 class YaSchedule:
@@ -13,6 +13,11 @@ class YaSchedule:
         """
         self.__token = token
         self.__lang = lang
+        self.session = CachedSession(
+            cache_name = __name__ + '.cache',
+            allowable_codes = [200, 404],
+            ignored_parameters = ['apikey'],
+        )
 
     def __get_payload(self, **kwargs) -> dict:
         """
@@ -30,7 +35,8 @@ class YaSchedule:
 
     def __get_response(self, api_method_url: str, payload: dict) -> dict:
         request_url = f'{self.base_url}{api_method_url}/'
-        response = requests.get(request_url, payload)
+        response = self.session.get(request_url, payload)
+        # TODO: add HTTP '429 Too Many Requests' handler and other non-200 codes (and corresponding :raises doc)
         return response.json()
 
     def get_all_stations(self, **kwargs) -> dict:
