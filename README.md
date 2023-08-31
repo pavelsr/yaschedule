@@ -1,7 +1,7 @@
 # yaschedule
 
 Lib for getting schedule data from Yandex.Rasp API:
-https://yandex.ru/dev/rasp/doc/concepts/about.html
+https://yandex.ru/dev/rasp/doc
 
 <a target="new" href="https://pypi.python.org/pypi/yaschedule"><img border=0 src="https://img.shields.io/badge/python-3.9+-blue.svg?style=flat" alt="Python version"></a>
 <a target="new" href="https://pypi.python.org/pypi/yaschedule"><img border=0 src="https://img.shields.io/pypi/v/yaschedule.svg?maxAge=60%" alt="PyPi version"></a>
@@ -23,6 +23,9 @@ city_1 = 'c213' # Moscow
 city_2 = 'c2' # Saint-Petersburg
 station_1 = 's9600366' # Pulkovo
 station_2 = 's9600213' # Sheremetevo
+
+# get station schedule
+yaschedule.get_station_schedule(station=station_1)
 
 # get schedule between two stations
 yaschedule.get_schedule(from_station=station_1, to_station=station_2)
