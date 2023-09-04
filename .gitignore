@@ -9,3 +9,4 @@ test.py
 **/*.json
 *.txt
 !requirements.txt
+yaschedule.core.cache
