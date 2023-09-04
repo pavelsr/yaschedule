@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 from pathlib import Path
 
-version = '0.0.4.0'
+version = '0.0.4.2'
 
 directory = Path(__file__).parent
 
