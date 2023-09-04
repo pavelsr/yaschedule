@@ -5,15 +5,32 @@ https://yandex.ru/dev/rasp/doc
 
 <a target="new" href="https://pypi.python.org/pypi/yaschedule"><img border=0 src="https://img.shields.io/badge/python-3.9+-blue.svg?style=flat" alt="Python version"></a>
 <a target="new" href="https://pypi.python.org/pypi/yaschedule"><img border=0 src="https://img.shields.io/pypi/v/yaschedule.svg?maxAge=60%" alt="PyPi version"></a>
+
 ## Quick Start
+### Init
 ```python
 from yaschedule.core import YaSchedule
 
 # TO GET TOKEN - https://yandex.ru/dev/rasp/doc/concepts/access.html
 TOKEN = 'some string' 
 
-# init 
+
 yaschedule = YaSchedule(TOKEN)
+```
+
+### [optional] requests caching
+See more at [requests_cache](https://requests-cache.readthedocs.io/) docs
+```python
+print(yaschedule.session.settings.expire_after) # get particular cache setting
+yaschedule.session.settings.expire_after = 600 # set particular cache setting
+
+print(yaschedule.session.settings) # get all cache settings as object of <class 'requests_cache.policy.settings.CacheSettings'>
+print({ a : getattr(yaschedule.session.settings, a) for a in dir(yaschedule.session.settings) if not a.startswith('_') }) # get all cache settings as dict
+
+```
+
+### Usage
+```python
 
 # get all stations in json 
 yaschedule.get_all_stations() # !!! The size of the returned data is about 40 MB
