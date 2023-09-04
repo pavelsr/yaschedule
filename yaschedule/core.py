@@ -70,3 +70,18 @@ class YaSchedule:
             **kwargs
         )
         return self.__get_response(api_method_url, payload)
+
+    def get_station_schedule(self, station: str, **kwargs) -> dict:
+        """
+        Get all flights from <city, station>
+        API_INFO: https://yandex.ru/dev/rasp/doc/ru/reference/schedule-on-station.html
+        :param station: station codes in yandex_code notations.
+        :param kwargs: u can redefine any api_method values. For example, transport_type=<'train','plane'>.
+        :return: dict of data
+        """
+        api_method_url = "schedule"
+        payload = self.__get_payload(
+            _station=station,
+            **kwargs
+        )
+        return self.__get_response(api_method_url, payload)
