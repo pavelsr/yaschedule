@@ -27,10 +27,18 @@ setup(
     packages=find_packages(exclude=('tests',)),
     include_package_data=True,
     install_requires=[
+    'attrs==23.1.0',
+    'cattrs==23.1.2',        
     'certifi>=2021.10.8',
     'charset-normalizer>=2.0.12',
+    'exceptiongroup==1.1.3',
     'idna>=3.3',
+    'platformdirs==3.10.0',
     'requests>=2.27.1',
+    "requests-cache==1.1.0",
+    "six==1.16.0",
+    "typing_extensions==4.7.1",
+    "url-normalize==1.4.3",
     'urllib3>=1.26.9',
     ],
 )
