@@ -1,6 +1,6 @@
+import logging
 import datetime
 from requests_cache import CachedSession
-
 
 class YaSchedule:
 
@@ -18,6 +18,7 @@ class YaSchedule:
             allowable_codes = [200, 404],
             ignored_parameters = ['apikey'],
         )
+        self.__logger = logging.getLogger(__name__)
 
     def __get_payload(self, **kwargs) -> dict:
         """
@@ -36,6 +37,14 @@ class YaSchedule:
     def __get_response(self, api_method_url: str, payload: dict) -> dict:
         request_url = f'{self.base_url}{api_method_url}/'
         response = self.session.get(request_url, payload)
+        # print(response.status_code)
+        self.__logger.info('%s %s %s',
+                           response.request.method,
+                           response.request.url,
+                           response.status_code)
+        props = ('from_cache', 'created_at', 'expires', 'is_expired')
+        msg = ", ".join([i+'='+str(getattr(response,i)) for i in props])
+        self.__logger.info('Response(%s)',msg)
         # TODO: add HTTP '429 Too Many Requests' handler and other non-200 codes (and corresponding :raises doc)
         return response.json()
 
