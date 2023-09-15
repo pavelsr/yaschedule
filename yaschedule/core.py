@@ -37,7 +37,6 @@ class YaSchedule:
     def __get_response(self, api_method_url: str, payload: dict) -> dict:
         request_url = f'{self.base_url}{api_method_url}/'
         response = self.session.get(request_url, payload)
-        # print(response.status_code)
         self.__logger.info('%s %s %s %sKB',
                            response.request.method,
                            response.request.url,
