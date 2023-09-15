@@ -38,10 +38,11 @@ class YaSchedule:
         request_url = f'{self.base_url}{api_method_url}/'
         response = self.session.get(request_url, payload)
         # print(response.status_code)
-        self.__logger.info('%s %s %s',
+        self.__logger.info('%s %s %s %sKB',
                            response.request.method,
                            response.request.url,
-                           response.status_code)
+                           response.status_code,
+                           round(len(response.content)/1024,2))
         props = ('from_cache', 'created_at', 'expires', 'is_expired')
         msg = ", ".join([i+'='+str(getattr(response,i)) for i in props])
         self.__logger.info('Response(%s)',msg)
