@@ -46,7 +46,8 @@ class YaSchedule:
         msg = ", ".join([i+'='+str(getattr(response,i)) for i in props])
         self.__logger.info('Response(%s)',msg)
         # TODO: add HTTP '429 Too Many Requests' handler and other non-200 codes (and corresponding :raises doc)
-        return response.json()
+        if response.status_code == 200:
+            return response.json()
 
     def get_all_stations(self, **kwargs) -> dict:
         """
