@@ -37,7 +37,6 @@ class YaSchedule:
     def __get_response(self, api_method_url: str, payload: dict) -> dict:
         request_url = f'{self.base_url}{api_method_url}/'
         response = self.session.get(request_url, payload)
-        # print(response.status_code)
         self.__logger.info('%s %s %s',
                            response.request.method,
                            response.request.url,
@@ -45,8 +44,23 @@ class YaSchedule:
         props = ('from_cache', 'created_at', 'expires', 'is_expired')
         msg = ", ".join([i+'='+str(getattr(response,i)) for i in props])
         self.__logger.info('Response(%s)',msg)
-        # TODO: add HTTP '429 Too Many Requests' handler and other non-200 codes (and corresponding :raises doc)
-        return response.json()
+
+        result = response.content
+        try:
+            result = response.json()
+        except json.JSONDecodeError as e:
+            self.__logger.info('Got invalid JSON from API: %s', e)
+
+        if response.status_code == 200:
+            return result
+        else:
+            self.__logger.info(
+                'Got HTTP ERROR, status_code=%s. Response headers: %s. Response content: %s',
+                response.status_code, response.headers, result
+            )
+            if response.status_code == 429:
+                self.__logger.info('Seems like you reached free API limit 500 requests per day, check it at %s',
+                                   'https://developer.tech.yandex.ru/services/')
 
     def get_all_stations(self, **kwargs) -> dict:
         """
