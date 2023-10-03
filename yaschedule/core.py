@@ -93,4 +93,26 @@ class YaSchedule:
             _station=station,
             **kwargs
         )
-        return self.__get_response(api_method_url, payload)
+        res = self.__get_response(api_method_url, payload)
+
+        num_requests_more = int(res['pagination']['total']) // int(res['pagination']['limit'])
+
+        self.__logger.info('This is a paginated route, total: %s, more requests for full result: %s',
+                           res['pagination']['total'],
+                           num_requests_more)
+
+        if 'offset' not in kwargs:
+            current_offset = step = res['pagination']['limit']
+            total = res['pagination']['total']
+            while current_offset < total:
+                payload = self.__get_payload(
+                    _station=station,
+                    offset = current_offset,
+                    **kwargs
+                )
+                i = self.__get_response(api_method_url, payload)
+                res['schedule'].extend(i['schedule'])
+                current_offset += step
+            del res['pagination']
+
+        return res
