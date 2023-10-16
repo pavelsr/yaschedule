@@ -10,7 +10,7 @@ backend-lint:
   script:
     - echo "Lint of backend service"
     - pip install flake8 Flake8-pyproject
-    - python -m flake8 ./generics
+    - python -m flake8 ./yaschedule
 
 mypy-test:
   image: python:3.10-alpine
@@ -19,7 +19,7 @@ mypy-test:
   script:
     - pip install poetry
     - poetry install --with dev
-    - poetry run python -m mypy ./generics 
+    - poetry run python -m mypy ./yaschedule 
 
 bandit-test:
   image: python:3.10-alpine
@@ -27,7 +27,7 @@ bandit-test:
   allow_failure: true
   script:
     - pip install bandit bandit[toml]
-    - python -m bandit -c pyproject.toml -r ./generics
+    - python -m bandit -c pyproject.toml -r ./yaschedule
 
 # pytest:
 #   image: docker:latest
