@@ -1,3 +1,31 @@
+[tool.flake8]
+extend-ignore = ['E731', 'W503']
+extend-exclude = [
+    '.git',
+    '__pycache__',
+    'env',
+    '.env',
+    '.env.test',
+    '.dockerignore',
+    'venv',
+    'migrations'
+]
+per-file-ignores = [
+    '__init__.py:F401,F403,E402',
+    'wsgi.py:F401',
+    'router.py:F401,F403,E402'
+]
+max-complexity = 8
+max-line-length = 120
+
+[tool.black]
+line-length = 120
+extend-exclude = '''
+    (
+        ^/migrations
+    )
+'''
+
 [tool.poetry]
 name = "yaschedule"
 version = "0.1.0"
@@ -8,10 +36,13 @@ readme = "README.md"
 [tool.poetry.dependencies]
 python = "^3.10"
 requests-cache = "^1.1.0"
+flake8-pyproject = "^1.2.3"
 
 
 [tool.poetry.group.dev.dependencies]
 environs = "^9.5.0"
+black = "^23.9.1"
+flake8 = "^6.1.0"
 
 [build-system]
 requires = ["poetry-core"]
