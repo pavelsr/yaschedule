@@ -1,0 +1,36 @@
+stages:
+  - lint
+  - test
+
+  
+backend-lint:
+  image: python:3.10-alpine
+  stage: lint
+  allow_failure: true
+  script:
+    - echo "Lint of backend service"
+    - pip install flake8 Flake8-pyproject
+    - python -m flake8 ./yaschedule
+
+mypy-test:
+  image: python:3.10-alpine
+  stage: lint
+  allow_failure: true
+  script:
+    - pip install poetry
+    - poetry install --with dev
+    - poetry run python -m mypy ./yaschedule 
+
+bandit-test:
+  image: python:3.10-alpine
+  stage: lint
+  allow_failure: true
+  script:
+    - pip install bandit bandit[toml]
+    - python -m bandit -c pyproject.toml -r ./yaschedule
+
+# pytest:
+#   image: docker:latest
+#   stage: test
+#   script:
+#     - docker compose -f test.docker-compose.yml up --exit-code-from progagenerics_test_runner --build --remove-orphans

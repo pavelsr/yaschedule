@@ -1,6 +1,8 @@
-from config import API_TOKEN
-from yaschedule.core import YaSchedule
+import sys
 import json
+from tests.config import API_TOKEN
+from yaschedule.core import YaSchedule
+
 
 yaschedule = YaSchedule(API_TOKEN)
 

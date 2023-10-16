@@ -10,3 +10,4 @@ test.py
 *.txt
 !requirements.txt
 yaschedule.core.cache
+poetry.lock
