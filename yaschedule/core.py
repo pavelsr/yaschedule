@@ -48,7 +48,7 @@ class YaSchedule:
         payload = self.__get_payload(**kwargs)
         return self.__get_response(api_method_url, payload)
 
-    def get_schedule(self, from_station: str, to_station: str, date: datetime.date = None, **kwargs) -> dict:
+    def get_schedule(self, from_station: str, to_station: str, date: datetime.date | None = None, **kwargs) -> dict:
         """
         Get all flights from <city, station> to <city, station>.
         API_INFO: https://yandex.ru/dev/rasp/doc/reference/schedule-point-point.html
