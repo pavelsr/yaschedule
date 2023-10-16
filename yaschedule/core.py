@@ -2,6 +2,7 @@ import logging
 import datetime
 from requests_cache import CachedSession
 
+
 class YaSchedule:
     base_url = "https://api.rasp.yandex.net/v3.0/"
 
@@ -35,14 +36,16 @@ class YaSchedule:
     def __get_response(self, api_method_url: str, payload: dict) -> dict:
         request_url = f"{self.base_url}{api_method_url}/"
         response = self.session.get(request_url, payload)
-        self.__logger.info('%s %s %s %sKB',
-                           response.request.method,
-                           response.request.url,
-                           response.status_code,
-                           round(len(response.content)/1024,2))
-        props = ('from_cache', 'created_at', 'expires', 'is_expired')
-        msg = ", ".join([i+'='+str(getattr(response,i)) for i in props])
-        self.__logger.info('Response(%s)',msg)
+        self.__logger.info(
+            "%s %s %s %sKB",
+            response.request.method,
+            response.request.url,
+            response.status_code,
+            round(len(response.content) / 1024, 2),
+        )
+        props = ("from_cache", "created_at", "expires", "is_expired")
+        msg = ", ".join([i + "=" + str(getattr(response, i)) for i in props])
+        self.__logger.info("Response(%s)", msg)
         # TODO: add HTTP '429 Too Many Requests' handler and other non-200 codes (and corresponding :raises doc)
         return response.json()
 
@@ -81,30 +84,25 @@ class YaSchedule:
         :return: dict of data
         """
         api_method_url = "schedule"
-        payload = self.__get_payload(
-            _station=station,
-            **kwargs
-        )
+        payload = self.__get_payload(_station=station, **kwargs)
         res = self.__get_response(api_method_url, payload)
 
-        num_requests_more = int(res['pagination']['total']) // int(res['pagination']['limit'])
+        num_requests_more = int(res["pagination"]["total"]) // int(res["pagination"]["limit"])
 
-        self.__logger.info('This is a paginated route, total: %s, more requests for full result: %s',
-                           res['pagination']['total'],
-                           num_requests_more)
+        self.__logger.info(
+            "This is a paginated route, total: %s, more requests for full result: %s",
+            res["pagination"]["total"],
+            num_requests_more,
+        )
 
-        if 'offset' not in kwargs:
-            current_offset = step = res['pagination']['limit']
-            total = res['pagination']['total']
+        if "offset" not in kwargs:
+            current_offset = step = res["pagination"]["limit"]
+            total = res["pagination"]["total"]
             while current_offset < total:
-                payload = self.__get_payload(
-                    _station=station,
-                    offset = current_offset,
-                    **kwargs
-                )
+                payload = self.__get_payload(_station=station, offset=current_offset, **kwargs)
                 i = self.__get_response(api_method_url, payload)
-                res['schedule'].extend(i['schedule'])
+                res["schedule"].extend(i["schedule"])
                 current_offset += step
-            del res['pagination']
+            del res["pagination"]
 
         return res
