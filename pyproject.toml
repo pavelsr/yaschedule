@@ -26,6 +26,11 @@ extend-exclude = '''
     )
 '''
 
+[tool.bandit]
+exclude_dirs = ["client", "tests", "venv"]
+#tests = ["B201", "B301"]
+#skips = ["B101", "B601"]
+
 [tool.poetry]
 name = "yaschedule"
 version = "0.1.0"
