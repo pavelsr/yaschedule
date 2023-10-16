@@ -1,3 +1,4 @@
+import typing as t
 import logging
 import datetime
 from requests_cache import CachedSession
@@ -90,19 +91,25 @@ class YaSchedule:
         num_requests_more = int(res["pagination"]["total"]) // int(res["pagination"]["limit"])
 
         self.__logger.info(
-            "This is a paginated route, total: %s, more requests for full result: %s",
-            res["pagination"]["total"],
-            num_requests_more,
+            f"This is a paginated route, total: {res['pagination']['total']}, more requests for full result: {num_requests_more}",
         )
-
-        if "offset" not in kwargs:
-            current_offset = step = res["pagination"]["limit"]
-            total = res["pagination"]["total"]
-            while current_offset < total:
-                payload = self.__get_payload(_station=station, offset=current_offset, **kwargs)
-                i = self.__get_response(api_method_url, payload)
-                res["schedule"].extend(i["schedule"])
-                current_offset += step
-            del res["pagination"]
-
+        res = self.__pagination_resolver(response=res, station=station, api_method_url=api_method_url, **kwargs)
         return res
+
+    def __pagination_resolver(self, response: dict, **kwargs):
+        """
+            Resolve pagination for api requests
+            :param response: response of first request
+            :param kwargs: params for requests
+            :return: dict of data
+        """
+        if not kwargs.get("offset"):
+            current_offset = step = response["pagination"]["limit"]
+            total = response["pagination"]["total"]
+            while current_offset < total:
+                payload = self.__get_payload(offset=current_offset, **kwargs)
+                i = self.__get_response(kwargs.get('api_method_url'), payload)
+                response["schedule"].extend(i["schedule"])
+                current_offset += step
+            del response["pagination"]
+        return response
