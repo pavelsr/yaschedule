@@ -43,6 +43,8 @@ flake8-pyproject = "^1.2.3"
 environs = "^9.5.0"
 black = "^23.9.1"
 flake8 = "^6.1.0"
+mypy = "^1.6.0"
+bandit = "^1.7.5"
 
 [build-system]
 requires = ["poetry-core"]
