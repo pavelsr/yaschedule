@@ -102,6 +102,8 @@ class YaSchedule:
             :param response: response of first request
             :param kwargs: params for requests
             :return: dict of data
+
+            Useful for schedule-on-station and query-nearest-station methods
         """
         if not kwargs.get("offset"):
             current_offset = step = response["pagination"]["limit"]
